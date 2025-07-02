@@ -10,6 +10,7 @@ from .rooms import router as rooms_router
 from .reservations import router as reservations_router
 from .students import router as students_router
 from .professors import router as professors_router
+from .auth import router as auth_router
 
 __all__ = [
     "health",
@@ -19,5 +20,6 @@ __all__ = [
     "rooms",
     "reservations",
     "students",
-    "professors"
+    "professors",
+    "auth"
 ] 

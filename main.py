@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 # Import routers
-from app.routers import health, users, access_cards, access_logs, rooms, reservations, students, professors
+from app.routers import health, users, access_cards, access_logs, rooms, reservations, students, professors, auth
 from app.config.settings import APP_NAME, APP_VERSION, CORS_ORIGINS, CORS_ALLOW_CREDENTIALS, CORS_ALLOW_METHODS, CORS_ALLOW_HEADERS
 
 # Import database migration
@@ -39,6 +39,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(health.router, prefix="/api/v1", tags=["health"])
+app.include_router(auth.router, prefix="/api/v1/auth", tags=["authentication"])
 app.include_router(users.router, prefix="/api/v1/users", tags=["users"])
 app.include_router(access_cards.router, prefix="/api/v1/access-cards", tags=["access-cards"])
 app.include_router(access_logs.router, prefix="/api/v1/access-logs", tags=["access-logs"])
