@@ -88,7 +88,7 @@ def run_migrations():
         # Check if all required tables exist
         required_tables = [
             'users', 'access_cards', 'rooms', 'access_logs', 
-            'reservations', 'students', 'professors'
+            'room_reservations', 'students', 'professors', 'roles', 'user_roles'
         ]
         
         missing_tables = [table for table in required_tables if table not in final_tables]

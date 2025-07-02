@@ -25,7 +25,7 @@ def test_get_existing_tables():
     # Check if required tables exist
     required_tables = [
         'users', 'access_cards', 'rooms', 'access_logs', 
-        'reservations', 'students', 'professors'
+        'room_reservations', 'students', 'professors', 'roles', 'user_roles'
     ]
     
     for table in required_tables:
@@ -41,7 +41,7 @@ def test_run_migrations():
     tables = get_existing_tables()
     required_tables = [
         'users', 'access_cards', 'rooms', 'access_logs', 
-        'reservations', 'students', 'professors'
+        'room_reservations', 'students', 'professors', 'roles', 'user_roles'
     ]
     
     for table in required_tables:

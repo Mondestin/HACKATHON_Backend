@@ -66,7 +66,7 @@ class UserRole(SQLAlchemyBaseModel):
     
     # Foreign keys
     user_id = Column(String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    role_id = Column(Integer, ForeignKey("roles.id", ondelete="CASCADE"), nullable=False)
+    role_id = Column(String(36), ForeignKey("roles.id", ondelete="CASCADE"), nullable=False)
     
     # Relationships
     user = relationship("User", back_populates="user_roles")

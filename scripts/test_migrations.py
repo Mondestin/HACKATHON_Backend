@@ -58,7 +58,7 @@ def test_migration_system():
     final_tables = get_existing_tables()
     required_tables = [
         'users', 'access_cards', 'rooms', 'access_logs', 
-        'reservations', 'students', 'professors'
+        'room_reservations', 'students', 'professors', 'roles', 'user_roles'
     ]
     
     missing_tables = [table for table in required_tables if table not in final_tables]
