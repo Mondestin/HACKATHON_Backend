@@ -3,7 +3,7 @@ Database models for Campus Access Management System.
 Based on the provided SQL schema.
 """
 
-from sqlalchemy import Column, String, Integer, DateTime, Enum, ForeignKey, CheckConstraint
+from sqlalchemy import Column, String, Integer, DateTime, Enum, ForeignKey, CheckConstraint, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.models.base import SQLAlchemyBaseModel
@@ -99,6 +99,7 @@ class AccessLog(SQLAlchemyBaseModel):
     accessed_at = Column(DateTime, default=func.now())
     location = Column(String(100), nullable=False)
     access_type = Column(Enum(AccessType), nullable=False)
+    granted = Column(Boolean, nullable=False, default=True)
     
     # Relationships
     card = relationship("AccessCard", back_populates="access_logs")

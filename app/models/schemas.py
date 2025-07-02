@@ -80,6 +80,7 @@ class AccessLogBase(BaseSchema):
     """Base access log schema."""
     location: str = Field(..., description="Access location")
     access_type: AccessTypeEnum = Field(..., description="Type of access")
+    granted: bool = Field(..., description="Whether access was granted or not")
 
 class AccessLogCreate(AccessLogBase):
     """Schema for creating a new access log."""

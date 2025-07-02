@@ -59,6 +59,38 @@ def create_all_tables():
         logger.error(f"Error creating tables: {e}")
         return False
 
+def add_granted_column_to_access_logs():
+    """
+    Add granted column to access_logs table if it doesn't exist.
+    """
+    try:
+        with engine.connect() as connection:
+            # Check if granted column exists
+            result = connection.execute(text("SHOW COLUMNS FROM access_logs LIKE 'granted'"))
+            if not result.fetchone():
+                # Add granted column
+                connection.execute(text("""
+                    ALTER TABLE access_logs 
+                    ADD COLUMN granted BOOLEAN NOT NULL DEFAULT TRUE
+                """))
+                connection.commit()
+                logger.info("Added 'granted' column to access_logs table")
+                
+                # Update existing records based on access_type
+                connection.execute(text("""
+                    UPDATE access_logs 
+                    SET granted = (access_type != 'denied')
+                    WHERE granted = TRUE
+                """))
+                connection.commit()
+                logger.info("Updated existing access_logs records with granted status")
+            else:
+                logger.info("'granted' column already exists in access_logs table")
+    except Exception as e:
+        logger.error(f"Error adding granted column: {e}")
+        return False
+    return True
+
 def run_migrations():
     """
     Run database migrations and setup.
@@ -79,6 +111,11 @@ def run_migrations():
         # Create all tables (SQLAlchemy will handle IF NOT EXISTS)
         if not create_all_tables():
             logger.error("Failed to create tables")
+            return False
+        
+        # Add granted column to access_logs
+        success = add_granted_column_to_access_logs()
+        if not success:
             return False
         
         # Verify tables were created

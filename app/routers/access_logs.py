@@ -44,10 +44,12 @@ async def create_access_log(
         )
     
     # Create new access log
+    granted = log_data.access_type != "denied"
     db_log = AccessLog(
         card_id=log_data.card_id,
         location=log_data.location,
-        access_type=log_data.access_type
+        access_type=log_data.access_type,
+        granted=granted
     )
     
     db.add(db_log)
@@ -99,10 +101,12 @@ async def simulate_access(
         access_type = "denied"  # Force denied if card is not active
     
     # Create access log
+    granted = access_type != "denied"
     db_log = AccessLog(
         card_id=card.id,
         location=location,
-        access_type=access_type
+        access_type=access_type,
+        granted=granted
     )
     
     db.add(db_log)
