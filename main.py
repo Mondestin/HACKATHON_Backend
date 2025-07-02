@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 # Import routers
-from app.routers import health, users, access_cards, access_logs, rooms, reservations, students, professors
+from app.routers import health, users, access_cards, access_logs, rooms, reservations, students, professors, authentication
 from app.config.settings import APP_NAME, APP_VERSION, CORS_ORIGINS, CORS_ALLOW_CREDENTIALS, CORS_ALLOW_METHODS, CORS_ALLOW_HEADERS
 
 # Import database migration
@@ -46,6 +46,7 @@ app.include_router(rooms.router, prefix="/api/v1/rooms", tags=["rooms"])
 app.include_router(reservations.router, prefix="/api/v1/reservations", tags=["reservations"])
 app.include_router(students.router, prefix="/api/v1/students", tags=["students"])
 app.include_router(professors.router, prefix="/api/v1/professors", tags=["professors"])
+app.include_router(authentication.router, prefix="/api/v1/auth", tags=["auth"])
 
 @app.on_event("startup")
 async def startup_event():

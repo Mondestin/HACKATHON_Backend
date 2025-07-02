@@ -1,0 +1,37 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: campus_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: estiamAccess
+      MYSQL_USER: campus_user
+      MYSQL_PASSWORD: campus_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: campus_api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DB_HOST: db
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    command: >
+      sh -c "pip install -r requirements.txt && \
+             uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+
+volumes:
+  db_data:
