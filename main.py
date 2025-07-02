@@ -9,12 +9,13 @@ from fastapi.responses import JSONResponse
 
 # Import routers
 from app.routers import health, users, access_cards, access_logs, rooms, reservations, students, professors
+from app.config.settings import APP_NAME, APP_VERSION, CORS_ORIGINS, CORS_ALLOW_CREDENTIALS, CORS_ALLOW_METHODS, CORS_ALLOW_HEADERS
 
 # Create FastAPI app instance
 app = FastAPI(
-    title="Campus Access Management System",
+    title=APP_NAME,
     description="A comprehensive API for managing campus access control, room reservations, and user profiles",
-    version="1.0.0",
+    version=APP_VERSION,
     docs_url="/docs",
     redoc_url="/redoc",
 )
@@ -22,10 +23,10 @@ app = FastAPI(
 # Configure CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure this properly for production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=CORS_ORIGINS,
+    allow_credentials=CORS_ALLOW_CREDENTIALS,
+    allow_methods=CORS_ALLOW_METHODS,
+    allow_headers=CORS_ALLOW_HEADERS,
 )
 
 # Include routers
@@ -46,9 +47,9 @@ async def root():
     """
     return JSONResponse(
         content={
-            "message": "Welcome to Campus Access Management System!",
+            "message": f"Welcome to {APP_NAME}!",
             "description": "A comprehensive API for managing campus access control, room reservations, and user profiles",
-            "version": "1.0.0",
+            "version": APP_VERSION,
             "docs": "/docs",
             "redoc": "/redoc",
             "health": "/api/v1/health",
@@ -81,21 +82,21 @@ async def global_exception_handler(request, exc):
 
 if __name__ == "__main__":
     import uvicorn
-    from app.config.settings import settings
+    from app.config.settings import HOST, PORT, DEBUG, LOG_LEVEL
     
     # Print startup information
-    print(f"Starting {settings.app_name} v{settings.app_version}")
-    print(f"Server will be available at: http://{settings.host}:{settings.port}")
-    print(f"API Documentation: http://{settings.host}:{settings.port}/docs")
-    print(f"Health Check: http://{settings.host}:{settings.port}/api/v1/health")
+    print(f"Starting {APP_NAME} v{APP_VERSION}")
+    print(f"Server will be available at: http://{HOST}:{PORT}")
+    print(f"API Documentation: http://{HOST}:{PORT}/docs")
+    print(f"Health Check: http://{HOST}:{PORT}/api/v1/health")
     print("-" * 50)
     
     # Run the application with uvicorn
     uvicorn.run(
         "main:app",
-        host=settings.host,
-        port=settings.port,
-        reload=settings.debug,  # Enable auto-reload for development
-        log_level=settings.log_level.lower(),
+        host=HOST,
+        port=PORT,
+        reload=DEBUG,  # Enable auto-reload for development
+        log_level=LOG_LEVEL.lower(),
         access_log=True
     ) 

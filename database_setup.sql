@@ -2,7 +2,7 @@
 -- This script creates the database and grants necessary permissions
 
 -- Create database
-CREATE DATABASE IF NOT EXISTS campus_access_db
+CREATE DATABASE IF NOT EXISTS estiamAccess
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 
@@ -10,19 +10,19 @@ COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS 'campus_user'@'localhost' IDENTIFIED BY 'campus_password';
 
 -- Grant permissions
-GRANT ALL PRIVILEGES ON campus_access_db.* TO 'campus_user'@'localhost';
+GRANT ALL PRIVILEGES ON estiamAccess.* TO 'campus_user'@'localhost';
 
 -- Grant permissions for any host (for development)
-GRANT ALL PRIVILEGES ON campus_access_db.* TO 'campus_user'@'%';
+GRANT ALL PRIVILEGES ON estiamAccess.* TO 'campus_user'@'%';
 
 -- Flush privileges
 FLUSH PRIVILEGES;
 
 -- Use the database
-USE campus_access_db;
+USE estiamAccess;
 
 -- Show created database
-SHOW DATABASES LIKE 'campus_access_db';
+SHOW DATABASES LIKE 'estiamAccess';
 
 -- Show user permissions
 SHOW GRANTS FOR 'campus_user'@'localhost'; 
