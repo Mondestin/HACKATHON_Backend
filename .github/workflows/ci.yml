@@ -49,7 +49,7 @@ jobs:
             fi
             sleep 2
           done
-      # Initialize the database schema using init.sql
+      # Initialize the database schema using database_setup.sql
       - name: Initialize DB schema
         run: |
           mysql -h127.0.0.1 -uroot -proot campus_access_db < database_setup.sql
