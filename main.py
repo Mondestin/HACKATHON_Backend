@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 # Create FastAPI app instance
 app = FastAPI(
     title=APP_NAME,
-    description="A comprehensive API for managing campus access control, room reservations, and user profiles",
+    description="Internal API for campus access control, room reservations, and user management",
     version=APP_VERSION,
     docs_url="/docs",
     redoc_url="/redoc",
