@@ -52,7 +52,7 @@ jobs:
       # Initialize the database schema using init.sql
       - name: Initialize DB schema
         run: |
-          mysql -h127.0.0.1 -uroot -proot campus_access_db < database/init.sql
+          mysql -h127.0.0.1 -uroot -proot campus_access_db < database/database_setup.sql
       # Run the test suite with pytest
       - name: Run tests
         env:
