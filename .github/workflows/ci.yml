@@ -53,6 +53,60 @@ jobs:
       - name: Initialize DB schema
         run: |
           mysql -h127.0.0.1 -uroot -proot campus_access_db < database_setup.sql
+      # Test database migration functionality
+      - name: Test database migrations
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_NAME: campus_access_db
+          DB_USER: root
+          DB_PASSWORD: root
+          SECRET_KEY: testsecretkey
+          ALGORITHM: HS256
+          ACCESS_TOKEN_EXPIRE_MINUTES: 60
+        run: |
+          PYTHONPATH=. python scripts/init_db.py
+      # Run comprehensive migration tests
+      - name: Run migration tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_NAME: campus_access_db
+          DB_USER: root
+          DB_PASSWORD: root
+          SECRET_KEY: testsecretkey
+          ALGORITHM: HS256
+          ACCESS_TOKEN_EXPIRE_MINUTES: 60
+        run: |
+          PYTHONPATH=. python scripts/test_migrations.py
+      # Verify database tables and data
+      - name: Verify database setup
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_NAME: campus_access_db
+          DB_USER: root
+          DB_PASSWORD: root
+        run: |
+          # Check if all required tables exist
+          mysql -h127.0.0.1 -uroot -proot campus_access_db -e "
+            SELECT table_name FROM information_schema.tables 
+            WHERE table_schema = 'campus_access_db' 
+            ORDER BY table_name;
+          "
+          
+          # Check if sample data was loaded
+          mysql -h127.0.0.1 -uroot -proot campus_access_db -e "
+            SELECT 'users' as table_name, COUNT(*) as count FROM users
+            UNION ALL
+            SELECT 'access_cards', COUNT(*) FROM access_cards
+            UNION ALL
+            SELECT 'rooms', COUNT(*) FROM rooms
+            UNION ALL
+            SELECT 'students', COUNT(*) FROM students
+            UNION ALL
+            SELECT 'professors', COUNT(*) FROM professors;
+          "
       # Run the test suite with pytest
       - name: Run tests
         env:

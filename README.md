@@ -4,37 +4,49 @@ A comprehensive FastAPI-based REST API for managing campus access control, room 
 
 ## Features
 
-### 🔐 User Management
+### User Management
 - User authentication and authorization
 - Role-based access control (Admin, Student, Professor)
 - Password hashing with bcrypt
 - User profile management
 
-### 🎫 Access Control
+### Access Control
 - Access card management with status tracking (active, lost, disabled)
 - Access log tracking for audit trails
 - Access simulation and validation
 - Location-based access control
 
-### 🏢 Room Management
+### Room Management
 - Room creation and management
 - Capacity tracking and validation
 - Location-based room organization
 - Room statistics and analytics
 
-### 📅 Room Reservations
+### Room Reservations
 - Room booking system with time slots
 - Conflict detection and prevention
 - Capacity vs. occupancy validation
 - Reservation management and tracking
 
-### 👥 Student & Professor Profiles
+### Student & Professor Profiles
 - Extended user profiles for students and professors
 - Academic information management
 - Department and class organization
 - Contact information tracking
 
+### Database Management
+- Automatic database migration on startup
+- Database connection health checks
+- Sample data initialization
+- Comprehensive database monitoring
+
 ## API Endpoints
+
+### Health & Monitoring (`/api/v1/health`)
+- `GET /health` - Basic health check
+- `GET /health/detailed` - Detailed system status with database info
+- `GET /health/database` - Database-specific health check
+- `GET /ready` - Readiness check for load balancers
 
 ### Users (`/api/v1/users`)
 - `POST /` - Create a new user
@@ -108,12 +120,10 @@ A comprehensive FastAPI-based REST API for managing campus access control, room 
 The system uses MySQL/MariaDB with the following main tables:
 
 - **users** - Base user accounts with authentication
-- **roles** - Role definitions
-- **user_roles** - Many-to-many user-role relationships
-- **access_cards** - Physical access cards
+- **access_cards** - Physical access cards with expiry dates
 - **access_logs** - Access attempt audit trail
-- **rooms** - Physical spaces
-- **room_reservations** - Room booking system
+- **rooms** - Physical spaces with capacity and type
+- **reservations** - Room booking system
 - **students** - Extended student profiles
 - **professors** - Extended professor profiles
 
@@ -138,13 +148,17 @@ The system uses MySQL/MariaDB with the following main tables:
 
 4. **Set up environment variables**
    ```bash
-   cp env.example .env
+   cp .env.example .env
    # Edit .env with your database configuration
    ```
 
-5. **Initialize database**
+5. **Set up database**
    ```bash
-   python -m app.database.init_db
+   # Option 1: Use the database setup script
+   mysql -u root -p < database_setup.sql
+   
+   # Option 2: Use the Python initialization script
+   python scripts/init_db.py
    ```
 
 6. **Run the application**
@@ -152,18 +166,43 @@ The system uses MySQL/MariaDB with the following main tables:
    uvicorn main:app --reload --host 0.0.0.0 --port 8000
    ```
 
+## Database Setup
+
+### Automatic Migration
+The application automatically runs database migrations on startup:
+- Checks database connection
+- Creates missing tables
+- Verifies table structure
+- Reports migration status
+
+### Manual Database Setup
+You can manually initialize the database using:
+
+```bash
+# Using the SQL script
+mysql -u root -p < database_setup.sql
+
+# Using the Python script
+python scripts/init_db.py
+```
+
+### Database Health Checks
+Monitor database health using:
+- `GET /api/v1/health/detailed` - Overall system health
+- `GET /api/v1/health/database` - Database-specific health
+- `GET /api/v1/ready` - Readiness check
+
 ## Environment Variables
 
 Create a `.env` file with the following variables:
 
 ```env
 # Database Configuration
-DATABASE_URL=mysql+pymysql://user:password@localhost/campus_access_db
-DATABASE_HOST=localhost
-DATABASE_PORT=3306
-DATABASE_NAME=campus_access_db
-DATABASE_USER=user
-DATABASE_PASSWORD=password
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=campus_access_db
+DB_USER=root
+DB_PASSWORD=root
 
 # Security
 SECRET_KEY=your-secret-key-change-in-production
@@ -175,13 +214,23 @@ HOST=0.0.0.0
 PORT=8000
 DEBUG=true
 LOG_LEVEL=INFO
+
+# Application Settings
+APP_NAME=Campus Access Management System
+APP_VERSION=1.0.0
+
+# CORS Settings
+CORS_ORIGINS=["*"]
+CORS_ALLOW_CREDENTIALS=true
+CORS_ALLOW_METHODS=["*"]
+CORS_ALLOW_HEADERS=["*"]
 ```
 
 ## Default Admin User
 
 The system creates a default admin user during initialization:
-- **Email**: admin@campus.com
-- **Password**: admin123
+- **Email**: admin@campus.edu
+- **Password**: password
 
 **Important**: Change these credentials in production!
 
@@ -192,6 +241,7 @@ Once the server is running, you can access:
 - **Interactive API Docs**: http://localhost:8000/docs
 - **ReDoc Documentation**: http://localhost:8000/redoc
 - **Health Check**: http://localhost:8000/api/v1/health
+- **Database Health**: http://localhost:8000/api/v1/health/database
 
 ## Development
 
@@ -200,35 +250,32 @@ Once the server is running, you can access:
 pytest
 ```
 
-### Code Formatting
+### Database Management
 ```bash
-black .
-isort .
+# Initialize database manually
+python scripts/init_db.py
+
+# Check database health
+curl http://localhost:8000/api/v1/health/database
 ```
 
-### Linting
-```bash
-flake8
-```
+### CI/CD
+The project includes GitHub Actions for:
+- Automated testing with MySQL
+- Database migration verification
+- Code quality checks
+- Security scanning
 
-## Security Features
+## Troubleshooting
 
-- Password hashing with bcrypt
-- Role-based access control
-- Input validation with Pydantic
-- SQL injection prevention with SQLAlchemy
-- CORS configuration
-- Comprehensive error handling
+### Database Connection Issues
+1. Check your `.env` file configuration
+2. Ensure MySQL is running
+3. Verify database credentials
+4. Check the health endpoints for detailed error information
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Run the test suite
-6. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License. 
+### Migration Issues
+1. Check database permissions
+2. Verify table structure with health endpoints
+3. Run manual initialization if needed
+4. Check application logs for detailed error messages 

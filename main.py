@@ -3,6 +3,7 @@ Main FastAPI application entry point for Campus Access Management System.
 This file contains the FastAPI app instance and basic configuration.
 """
 
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -10,6 +11,13 @@ from fastapi.responses import JSONResponse
 # Import routers
 from app.routers import health, users, access_cards, access_logs, rooms, reservations, students, professors
 from app.config.settings import APP_NAME, APP_VERSION, CORS_ORIGINS, CORS_ALLOW_CREDENTIALS, CORS_ALLOW_METHODS, CORS_ALLOW_HEADERS
+
+# Import database migration
+from app.database.migrations import run_migrations, initialize_sample_data
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Create FastAPI app instance
 app = FastAPI(
@@ -38,6 +46,26 @@ app.include_router(rooms.router, prefix="/api/v1/rooms", tags=["rooms"])
 app.include_router(reservations.router, prefix="/api/v1/reservations", tags=["reservations"])
 app.include_router(students.router, prefix="/api/v1/students", tags=["students"])
 app.include_router(professors.router, prefix="/api/v1/professors", tags=["professors"])
+
+@app.on_event("startup")
+async def startup_event():
+    """
+    Run database migrations and initialization on application startup.
+    """
+    logger.info("Starting Campus Access Management System...")
+    
+    # Run database migrations
+    logger.info("Running database migrations...")
+    migration_success = run_migrations()
+    
+    if migration_success:
+        logger.info("Database migrations completed successfully")
+        # Check sample data
+        initialize_sample_data()
+    else:
+        logger.error("Database migrations failed. Application may not function correctly.")
+        # Note: We don't exit here to allow the app to start even if migrations fail
+        # This is useful for development and testing scenarios
 
 # Root endpoint
 @app.get("/")
