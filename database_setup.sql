@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS access_logs (
     accessed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     location VARCHAR(100) NOT NULL,
     access_type ENUM('entry', 'exit', 'denied') NOT NULL,
+    granted BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (card_id) REFERENCES access_cards(id) ON DELETE SET NULL,
     INDEX idx_card_id (card_id),
     INDEX idx_accessed_at (accessed_at),
@@ -171,12 +172,12 @@ INSERT INTO professors (id, user_id, full_name, email, department, phone_number,
 ('550e8400-e29b-41d4-a716-446655440401', '550e8400-e29b-41d4-a716-446655440006', 'Professor Wilson', 'prof.wilson@campus.edu', 'Computer Science', '+1234567893', 'Main Building, Room 205');
 
 -- Insert access logs
-INSERT INTO access_logs (id, card_id, accessed_at, location, access_type) VALUES
-('550e8400-e29b-41d4-a716-446655440501', '550e8400-e29b-41d4-a716-446655440102', '2024-01-15 09:00:00', 'Main Building', 'entry'),
-('550e8400-e29b-41d4-a716-446655440502', '550e8400-e29b-41d4-a716-446655440102', '2024-01-15 10:30:00', 'Main Building', 'exit'),
-('550e8400-e29b-41d4-a716-446655440503', '550e8400-e29b-41d4-a716-446655440104', '2024-01-15 09:00:00', 'Main Building', 'entry'),
-('550e8400-e29b-41d4-a716-446655440504', '550e8400-e29b-41d4-a716-446655440103', '2024-01-15 14:00:00', 'Library', 'entry'),
-('550e8400-e29b-41d4-a716-446655440505', '550e8400-e29b-41d4-a716-446655440105', '2024-01-15 15:00:00', 'Science Building', 'denied');
+INSERT INTO access_logs (id, card_id, accessed_at, location, access_type, granted) VALUES
+('550e8400-e29b-41d4-a716-446655440501', '550e8400-e29b-41d4-a716-446655440102', '2024-01-15 09:00:00', 'Main Building', 'entry', TRUE),
+('550e8400-e29b-41d4-a716-446655440502', '550e8400-e29b-41d4-a716-446655440102', '2024-01-15 10:30:00', 'Main Building', 'exit', TRUE),
+('550e8400-e29b-41d4-a716-446655440503', '550e8400-e29b-41d4-a716-446655440104', '2024-01-15 09:00:00', 'Main Building', 'entry', TRUE),
+('550e8400-e29b-41d4-a716-446655440504', '550e8400-e29b-41d4-a716-446655440103', '2024-01-15 14:00:00', 'Library', 'entry', TRUE),
+('550e8400-e29b-41d4-a716-446655440505', '550e8400-e29b-41d4-a716-446655440105', '2024-01-15 15:00:00', 'Science Building', 'denied', FALSE);
 
 -- Insert room reservations
 INSERT INTO room_reservations (id, room_id, reserved_by, start_time, end_time, expected_occupants) VALUES
