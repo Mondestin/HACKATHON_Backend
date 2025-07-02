@@ -19,7 +19,7 @@ def test_health_check():
     data = response.json()
     assert data["status"] == "healthy"
     assert "timestamp" in data
-    assert data["service"] == "FastAPI Project"
+    assert data["service"] == "Campus Access Management System"
     assert data["version"] == "1.0.0"
 
 def test_detailed_health_check():

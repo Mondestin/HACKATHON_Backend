@@ -89,7 +89,7 @@ async def readiness_check():
         
         # Check if required tables exist
         tables = get_existing_tables()
-        required_tables = ['users', 'access_cards', 'rooms', 'access_logs', 'reservations', 'students', 'professors']
+        required_tables = ['users', 'access_cards', 'rooms', 'access_logs', 'room_reservations', 'students', 'professors', 'roles', 'user_roles']
         missing_tables = [table for table in required_tables if table not in tables]
         
         if missing_tables:
