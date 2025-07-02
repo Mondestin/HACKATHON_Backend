@@ -142,12 +142,12 @@ INSERT INTO user_roles (id, user_id, role_id) VALUES
 ('550e8400-e29b-41d4-a716-446655440012', '550e8400-e29b-41d4-a716-446655440007', '550e8400-e29b-41d4-a716-446655440001');
 
 -- Insert access cards
-INSERT INTO access_cards (id, user_id, card_number, status) VALUES
-('550e8400-e29b-41d4-a716-446655440101', '550e8400-e29b-41d4-a716-446655440003', 'CARD001', 'active'),
-('550e8400-e29b-41d4-a716-446655440102', '550e8400-e29b-41d4-a716-446655440004', 'CARD002', 'active'),
-('550e8400-e29b-41d4-a716-446655440103', '550e8400-e29b-41d4-a716-446655440005', 'CARD003', 'active'),
-('550e8400-e29b-41d4-a716-446655440104', '550e8400-e29b-41d4-a716-446655440006', 'CARD004', 'active'),
-('550e8400-e29b-41d4-a716-446655440105', '550e8400-e29b-41d4-a716-446655440007', 'CARD005', 'active');
+INSERT INTO access_cards (id, user_id, card_number, status, issued_at) VALUES
+('550e8400-e29b-41d4-a716-446655440101', '550e8400-e29b-41d4-a716-446655440003', 'CARD001', 'active', '2024-01-01 00:00:00'),
+('550e8400-e29b-41d4-a716-446655440102', '550e8400-e29b-41d4-a716-446655440004', 'CARD002', 'active', '2024-01-01 00:00:00'),
+('550e8400-e29b-41d4-a716-446655440103', '550e8400-e29b-41d4-a716-446655440005', 'CARD003', 'active', '2024-01-01 00:00:00'),
+('550e8400-e29b-41d4-a716-446655440104', '550e8400-e29b-41d4-a716-446655440006', 'CARD004', 'active', '2024-01-01 00:00:00'),
+('550e8400-e29b-41d4-a716-446655440105', '550e8400-e29b-41d4-a716-446655440007', 'CARD005', 'active', '2024-01-01 00:00:00');
 
 -- Insert rooms
 INSERT INTO rooms (id, name, location, capacity) VALUES
@@ -161,10 +161,10 @@ INSERT INTO rooms (id, name, location, capacity) VALUES
 ('550e8400-e29b-41d4-a716-446655440208', 'Computer Lab 601', 'Computer Center', 35);
 
 -- Insert students
-INSERT INTO students (id, user_id, full_name, student_card_id, email, class_name, phone_number) VALUES
-('550e8400-e29b-41d4-a716-446655440301', '550e8400-e29b-41d4-a716-446655440004', 'John Doe', 'STU2024001', 'john.doe@campus.edu', 'Computer Science', '+1234567890'),
-('550e8400-e29b-41d4-a716-446655440302', '550e8400-e29b-41d4-a716-446655440005', 'Jane Smith', 'STU2024002', 'jane.smith@campus.edu', 'Mathematics', '+1234567891'),
-('550e8400-e29b-41d4-a716-446655440303', '550e8400-e29b-41d4-a716-446655440007', 'Alice Johnson', 'STU2024003', 'alice.johnson@campus.edu', 'Physics', '+1234567892');
+INSERT INTO students (id, user_id, full_name, student_card_id, email, class_name, phone_number, registered_at) VALUES
+('550e8400-e29b-41d4-a716-446655440301', '550e8400-e29b-41d4-a716-446655440004', 'John Doe', 'STU2024001', 'john.doe@campus.edu', 'Computer Science', '+1234567890', '2024-01-01 00:00:00'),
+('550e8400-e29b-41d4-a716-446655440302', '550e8400-e29b-41d4-a716-446655440005', 'Jane Smith', 'STU2024002', 'jane.smith@campus.edu', 'Mathematics', '+1234567891', '2024-01-01 00:00:00'),
+('550e8400-e29b-41d4-a716-446655440303', '550e8400-e29b-41d4-a716-446655440007', 'Alice Johnson', 'STU2024003', 'alice.johnson@campus.edu', 'Physics', '+1234567892', '2024-01-01 00:00:00');
 
 -- Insert professors
 INSERT INTO professors (id, user_id, full_name, email, department, phone_number, office) VALUES
