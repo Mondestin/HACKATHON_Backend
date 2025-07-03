@@ -11,7 +11,7 @@ from datetime import datetime
 from app.models.base import get_db
 from app.models.database_models import RoomReservation, Room, User
 from app.models.schemas import (
-    RoomReservationCreate, RoomReservationUpdate, RoomReservationResponse,
+    RoomReservationCreate, RoomReservationUpdate, RoomReservationResponse, ExtendedRoomReservationResponse,
     PaginationParams, PaginatedResponse, ErrorResponse
 )
 
@@ -162,20 +162,20 @@ async def get_room_reservations(
     
     return reservations
 
-@router.get("/user/{user_id}", response_model=List[RoomReservationResponse])
+@router.get("/user/{user_id}", response_model=List[ExtendedRoomReservationResponse])
 async def get_user_reservations(
     user_id: str,
     db: Session = Depends(get_db)
 ):
     """
-    Get all reservations made by a specific user.
+    Get all reservations made by a specific user with full room information.
     
     Args:
         user_id: User ID
         db: Database session
         
     Returns:
-        List of reservations made by the user
+        List of reservations made by the user with full room details
         
     Raises:
         HTTPException: If user not found
@@ -188,8 +188,8 @@ async def get_user_reservations(
             detail="User not found"
         )
     
-    # Get reservations made by the user
-    reservations = db.query(RoomReservation).filter(RoomReservation.reserved_by == user_id).all()
+    # Get reservations made by the user with room information
+    reservations = db.query(RoomReservation).join(Room).filter(RoomReservation.reserved_by == user_id).all()
     
     return reservations
 

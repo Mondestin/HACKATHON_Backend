@@ -142,6 +142,12 @@ class RoomReservationResponse(RoomReservationBase):
     id: str = Field(..., description="Reservation ID")
     reserved_by: str = Field(..., description="User ID making the reservation")
 
+class ExtendedRoomReservationResponse(RoomReservationBase):
+    """Extended schema for room reservation response with full room information."""
+    id: str = Field(..., description="Reservation ID")
+    reserved_by: str = Field(..., description="User ID making the reservation")
+    room: RoomResponse = Field(..., description="Full room information")
+
 # Student schemas
 class StudentBase(BaseSchema):
     """Base student schema."""

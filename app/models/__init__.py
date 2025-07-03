@@ -18,7 +18,7 @@ from .schemas import (
     # Room schemas
     RoomCreate, RoomUpdate, RoomResponse,
     # Reservation schemas
-    RoomReservationCreate, RoomReservationUpdate, RoomReservationResponse,
+    RoomReservationCreate, RoomReservationUpdate, RoomReservationResponse, ExtendedRoomReservationResponse,
     # Student schemas
     StudentCreate, StudentUpdate, StudentResponse,
     # Professor schemas
@@ -53,7 +53,7 @@ __all__ = [
     "RoomCreate", "RoomUpdate", "RoomResponse",
     
     # Reservation schemas
-    "RoomReservationCreate", "RoomReservationUpdate", "RoomReservationResponse",
+    "RoomReservationCreate", "RoomReservationUpdate", "RoomReservationResponse", "ExtendedRoomReservationResponse",
     
     # Student schemas
     "StudentCreate", "StudentUpdate", "StudentResponse",
