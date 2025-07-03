@@ -23,6 +23,8 @@ from .schemas import (
     StudentCreate, StudentUpdate, StudentResponse,
     # Professor schemas
     ProfessorCreate, ProfessorUpdate, ProfessorResponse,
+    # Authentication schemas
+    LoginRequest, LoginResponse, ExtendedLoginResponse, TokenResponse,
     # Common schemas
     PaginationParams, PaginatedResponse, ErrorResponse,
     # Enums
@@ -58,6 +60,9 @@ __all__ = [
     
     # Professor schemas
     "ProfessorCreate", "ProfessorUpdate", "ProfessorResponse",
+    
+    # Authentication schemas
+    "LoginRequest", "LoginResponse", "ExtendedLoginResponse", "TokenResponse",
     
     # Common schemas
     "PaginationParams", "PaginatedResponse", "ErrorResponse",

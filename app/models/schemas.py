@@ -195,6 +195,32 @@ class ProfessorResponse(ProfessorBase):
     id: str = Field(..., description="Professor ID")
     user_id: str = Field(..., description="Associated user ID")
 
+# Authentication schemas
+class LoginRequest(BaseModel):
+    """Login request schema."""
+    username: str = Field(..., description="User email")
+    password: str = Field(..., description="User password")
+
+class LoginResponse(BaseSchema):
+    """Login response schema with token and user info."""
+    access_token: str = Field(..., description="JWT access token")
+    token_type: str = Field(..., description="Token type (bearer)")
+    expires_in: int = Field(..., description="Token expiration time in minutes")
+    user: UserResponse = Field(..., description="User information")
+
+class ExtendedLoginResponse(BaseSchema):
+    """Extended login response schema with token, user info, and full profile details."""
+    access_token: str = Field(..., description="JWT access token")
+    token_type: str = Field(..., description="Token type (bearer)")
+    expires_in: int = Field(..., description="Token expiration time in minutes")
+    user: UserResponse = Field(..., description="User information")
+    profile: Optional[dict] = Field(None, description="Full profile information (student, professor, or admin details)")
+
+class TokenResponse(BaseModel):
+    """Token response schema."""
+    access_token: str = Field(..., description="JWT access token")
+    token_type: str = Field(..., description="Token type (bearer)")
+
 # Pagination schemas
 class PaginationParams(BaseModel):
     """Pagination parameters."""

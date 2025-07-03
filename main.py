@@ -83,6 +83,7 @@ async def root():
             "redoc": "/redoc",
             "health": "/api/v1/health",
             "endpoints": {
+                "auth": "/api/v1/auth",
                 "users": "/api/v1/users",
                 "access_cards": "/api/v1/access-cards",
                 "access_logs": "/api/v1/access-logs",
